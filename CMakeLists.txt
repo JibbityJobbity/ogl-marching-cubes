@@ -2,8 +2,9 @@ cmake_minimum_required(VERSION 3.16.0)
 project(OGLCubeMarch)
 
 set(SOURCES 
-	src/main.cpp 
-	src/glad.c 
+	src/main.cpp
+	src/GLCubeMarchWindow.cpp
+	src/glad.c
 )
 
 add_executable(OGLCubeMarch ${SOURCES})
