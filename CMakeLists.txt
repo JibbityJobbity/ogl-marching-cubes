@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.16.0)
+set (CMAKE_CXX_STANDARD 17)
 project(OGLCubeMarch)
 
 set(SOURCES 
 	src/main.cpp
 	src/GLCubeMarchWindow.cpp
+	src/PlainMesh.cpp
 	src/glad.c
 )
 
