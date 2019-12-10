@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 
 #include "PlainMesh.hpp"
+#include "Shader.hpp"
 
 #include <vector>
 #include <memory>
@@ -19,5 +20,6 @@ protected:
 	int m_setupStatus;
 	int m_width;
 	int m_height;
+	std::vector<Shader> m_shaders;
 	GLFWwindow* m_window;
 };

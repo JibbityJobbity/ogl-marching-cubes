@@ -59,8 +59,9 @@ GLCubeMarchWindow::GLCubeMarchWindow() {
 		0, 1, 2
 	});
 	testMesh->SetBuffers(std::move(vertices), std::move(indices));
-	testMesh->SetDrawMode(DrawMode::Standard);
 	m_meshes.push_back(testMesh);
+
+	m_shaders.push_back(Shader("StandardShaderV.glsl", "StandardShaderF.glsl"));
 
 	m_setupStatus = 0;
 }
@@ -73,6 +74,7 @@ int GLCubeMarchWindow::Run() {
 	oldWidth = m_width;
 	oldHeight = m_height;
 	bool shouldClose = false;
+	m_shaders.at(0).Use();
 	while (!shouldClose) {
 		glClearColor((double)((CLEAR_COLOR&0xFF0000)>>16)/(double)256, (double)((CLEAR_COLOR&0xFF00)>>8)/(double)256, (double)(CLEAR_COLOR&0xFF)/(double)256, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);

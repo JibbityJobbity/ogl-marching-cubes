@@ -8,13 +8,9 @@
 PlainMesh::PlainMesh() {
 	buffersInitialised = false;
 
-	customShader = {};
-
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &EBO);
-
-	standardShader = createShaderFromFile("StandardShaderV.glsl", "StandardShaderF.glsl");
 }
 
 PlainMesh::~PlainMesh() {
@@ -28,18 +24,6 @@ void PlainMesh::Draw() {
 		return;
 
 	glBindVertexArray(VAO);
-
-	if (drawMode == DrawMode::Standard)
-		glUseProgram(standardShader);
-	else if (drawMode == DrawMode::NormalToColor)
-		glUseProgram(normalToColorShader);
-	else if (drawMode == DrawMode::Custom) {
-		if (!customShader.has_value()) {
-			std::cerr << "Can't draw custom shaded element without setting custom shader" << std::endl;
-			return;
-		}
-		glUseProgram(customShader.value());
-	}
 
 	glDrawElements(GL_TRIANGLES, m_indices->size(), GL_UNSIGNED_INT, 0);
 
@@ -87,15 +71,6 @@ unsigned int PlainMesh::createShaderFromSource(const char* vsSource, const char*
 	}
 
 	return program;
-}
-
-void PlainMesh::SetCustomShader(const char* source) {
-	// TODO
-	std::cerr << "Custom shader is TODO" << std::endl;
-}
-
-void PlainMesh::SetDrawMode(DrawMode d) {
-	drawMode = d;
 }
 
 void PlainMesh::bindBuffers() {

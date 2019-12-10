@@ -7,15 +7,6 @@
 #include <vector>
 #include <memory>
 
-static bool defaultShadersInitialised = false;
-
-enum DrawMode {
-	Standard = 0,
-	NormalToColor = 1,
-	Wireframe = 2,
-	Custom = 3
-};
-
 struct Vertex {
 	glm::vec3 Position;
 	glm::vec3 Normal;
@@ -28,16 +19,11 @@ public:
 	~PlainMesh();
 
 	void Draw();
-	void SetDrawMode(DrawMode d);
-	void SetCustomShader(const char* source);
 	void SetBuffers(std::shared_ptr<std::vector<Vertex>> vertices, std::shared_ptr<std::vector<unsigned int>> indices);
 protected:
-	unsigned int standardShader, normalToColorShader;
 
 	unsigned int VAO, VBO, EBO;
-	std::optional<unsigned int> customShader;
 	bool buffersInitialised;
-	DrawMode drawMode;
 	std::shared_ptr<std::vector<Vertex>> m_vertices;
 	std::shared_ptr<std::vector<unsigned int>> m_indices;
 
