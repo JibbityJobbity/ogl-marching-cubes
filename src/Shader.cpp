@@ -50,3 +50,8 @@ Shader::Shader(std::string vsPath, std::string fsPath) {
 void Shader::Use() {
 	glUseProgram(m_program);
 }
+
+void Shader::SetMat4(std::string key, glm::mat4 value) {
+	unsigned int uniformLocation = glGetUniformLocation(m_program, key.c_str());
+	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(value));
+}
