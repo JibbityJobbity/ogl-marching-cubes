@@ -7,6 +7,7 @@ set(SOURCES
 	src/GLCubeMarchWindow.cpp
 	src/PlainMesh.cpp
 	src/Shader.cpp
+	src/Camera.cpp
 	src/glad.c
 )
 
