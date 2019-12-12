@@ -8,6 +8,7 @@ set(SOURCES
 	src/PlainMesh.cpp
 	src/Shader.cpp
 	src/Camera.cpp
+	src/PerlinNoise.cpp
 	src/glad.c
 )
 
