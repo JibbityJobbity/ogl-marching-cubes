@@ -131,6 +131,8 @@ GLCubeMarchWindow::GLCubeMarchWindow() {
 }
 
 int GLCubeMarchWindow::Run() {
+	int framecount = 0;
+	float oldFramecountTime = glfwGetTime();
 	if (m_setupStatus != 0)
 		return -1;
 
@@ -162,6 +164,13 @@ int GLCubeMarchWindow::Run() {
 
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
+
+		framecount++;
+		if (glfwGetTime() - oldFramecountTime > 1.0f) {
+			std::cout << framecount << std::endl;
+			framecount = 0;
+			oldFramecountTime = glfwGetTime();
+		}
 	}
 
 	return 0;
