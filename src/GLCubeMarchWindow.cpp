@@ -94,6 +94,7 @@ GLCubeMarchWindow::GLCubeMarchWindow() {
 	glViewport(0, 0, m_width, m_height);
 	glCullFace(GL_BACK);
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
 
 	auto testMesh = std::make_shared<PlainMesh>();
 	std::shared_ptr<std::vector<Vertex>> vertices(new std::vector<Vertex> {
@@ -140,7 +141,7 @@ int GLCubeMarchWindow::Run() {
 	bool shouldClose = false;
 	while (!shouldClose) {
 		glClearColor((double)((CLEAR_COLOR&0xFF0000)>>16)/(double)256, (double)((CLEAR_COLOR&0xFF00)>>8)/(double)256, (double)(CLEAR_COLOR&0xFF)/(double)256, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Process user input
 		processInput();
