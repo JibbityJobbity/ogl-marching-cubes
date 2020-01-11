@@ -6,11 +6,13 @@ layout(location = 2) in vec2 tex;
 
 uniform mat4 camera;
 
+out vec3 sPos;
 out vec3 sNormal;
 out vec2 sTex;
 
 void main() {
 	gl_Position = camera * vec4(pos.x, pos.y, pos.z, 1.0);
+	sPos = pos;
 	sNormal = normal;
 	sTex = tex;
 }
