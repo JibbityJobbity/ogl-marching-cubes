@@ -15,8 +15,8 @@ void GLCubeMarchWindow::processInput() {
 	double now = glfwGetTime();
 	double dTime = now - oldFrameTime;
 	oldFrameTime = now;
-	processMouse(dTime);
-	processKeyboard(dTime);
+	processMouse(dTime * 50);
+	processKeyboard(dTime * 20);
 }
 
 void GLCubeMarchWindow::processMouse(double dTime) {
