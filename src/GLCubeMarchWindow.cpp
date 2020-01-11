@@ -92,6 +92,8 @@ GLCubeMarchWindow::GLCubeMarchWindow() {
 	}
 
 	glViewport(0, 0, m_width, m_height);
+	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
 
 	auto testMesh = std::make_shared<PlainMesh>();
 	std::shared_ptr<std::vector<Vertex>> vertices(new std::vector<Vertex> {
