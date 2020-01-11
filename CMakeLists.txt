@@ -9,6 +9,7 @@ set(SOURCES
 	src/Shader.cpp
 	src/Camera.cpp
 	src/PerlinNoise.cpp
+	src/ThreeDimensionMesh.cpp
 	src/glad.c
 )
 

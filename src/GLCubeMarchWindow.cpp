@@ -1,5 +1,7 @@
 #include "GLCubeMarchWindow.hpp"
 
+#include "ThreeDimensionMesh.hpp"
+
 #include <iostream>
 
 #define CLEAR_COLOR 0x1e3356
@@ -109,7 +111,8 @@ GLCubeMarchWindow::GLCubeMarchWindow() {
 		0, 1, 2
 	});
 	testMesh->SetBuffers(std::move(vertices), std::move(indices));
-	m_meshes.push_back(testMesh);
+	//m_meshes.push_back(testMesh);
+	m_meshes.push_back(std::make_shared<ThreeDimensionMesh>());
 
 	m_shaders.push_back(Shader("StandardShaderV.glsl", "StandardShaderF.glsl"));
 
