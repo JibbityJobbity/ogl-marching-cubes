@@ -54,6 +54,12 @@ void GLCubeMarchWindow::processKeyboard(double dTime) {
 		m_camera.Move(0.0, dTime, 0.0);
 	if (glfwGetKey(m_window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
 		m_camera.Move(0.0, -dTime, 0.0);
+	if (glfwGetKey(m_window, GLFW_KEY_1) == GLFW_PRESS &&
+		glfwGetKey(m_window, GLFW_KEY_2) != GLFW_PRESS)
+		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+	if (glfwGetKey(m_window, GLFW_KEY_1) != GLFW_PRESS &&
+		glfwGetKey(m_window, GLFW_KEY_2) == GLFW_PRESS)
+		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 }
 
 GLCubeMarchWindow::GLCubeMarchWindow() {
