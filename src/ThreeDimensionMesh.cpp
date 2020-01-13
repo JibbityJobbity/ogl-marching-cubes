@@ -7,18 +7,36 @@ ThreeDimensionMesh::ThreeDimensionMesh() {
 
 	PerlinNoise n(time(nullptr));
 
+	auto noiseValues = std::unique_ptr<
+		std::unique_ptr<
+			std::unique_ptr<double[]>[]
+		>[]
+	>(new std::unique_ptr<std::unique_ptr<double[]>[]>[GRID_SIZE]);
+	
+	for (int x = 0; x < GRID_SIZE; x++) {
+		noiseValues[x] = std::unique_ptr<std::unique_ptr<double[]>[]>(new std::unique_ptr<double[]>[GRID_SIZE]);
+		for (int y = 0; y < GRID_SIZE; y++) {
+			noiseValues[x][y] = std::unique_ptr<double[]>(new double[GRID_SIZE]);
+			for (int z = 0; z < GRID_SIZE; z++) {
+				double noise = n.noise(((double)x)*NOISE_SCALE_X, ((double)y)*NOISE_SCALE_Y, ((double)z)*NOISE_SCALE_Z);
+				noiseValues[x].get()[y].get()[z] = noise;
+			}
+		}
+	}
+
 	for (int x = 0; x < GRID_SIZE - 1; x++) {
-		for (int z = 0; z < GRID_SIZE - 1; z++) {
-			for (int y = 0; y < GRID_SIZE - 1; y++) {
+		for (int y = 0; y < GRID_SIZE - 1; y++) {
+			for (int z = 0; z < GRID_SIZE - 1; z++) {
 				unsigned char cubeCorners = 0;
-				cubeCorners |= NOISE_THRESHOLD < n.noise(((double)x)*NOISE_SCALE_X, ((double)y)*NOISE_SCALE_Y, ((double)z)*NOISE_SCALE_Z) ? 1 : 0;
-				cubeCorners |= NOISE_THRESHOLD < n.noise(((double)x + 1)*NOISE_SCALE_X, ((double)y)*NOISE_SCALE_Y, ((double)z)*NOISE_SCALE_Z) ? 2 : 0;
-				cubeCorners |= NOISE_THRESHOLD < n.noise(((double)x + 1)*NOISE_SCALE_X, ((double)y)*NOISE_SCALE_Y, ((double)z + 1)*NOISE_SCALE_Z) ? 4 : 0;
-				cubeCorners |= NOISE_THRESHOLD < n.noise(((double)x)*NOISE_SCALE_X, ((double)y)*NOISE_SCALE_Y, ((double)z + 1)*NOISE_SCALE_Z) ? 8 : 0;
-				cubeCorners |= NOISE_THRESHOLD < n.noise(((double)x)*NOISE_SCALE_X, ((double)y + 1)*NOISE_SCALE_Y, ((double)z)*NOISE_SCALE_Z) ? 16 : 0;
-				cubeCorners |= NOISE_THRESHOLD < n.noise(((double)x + 1)*NOISE_SCALE_X, ((double)y + 1)*NOISE_SCALE_Y, ((double)z)*NOISE_SCALE_Z) ? 32 : 0;
-				cubeCorners |= NOISE_THRESHOLD < n.noise(((double)x + 1)*NOISE_SCALE_X, ((double)y + 1)*NOISE_SCALE_Y, ((double)z + 1)*NOISE_SCALE_Z) ? 64 : 0;
-				cubeCorners |= NOISE_THRESHOLD < n.noise(((double)x)*NOISE_SCALE_X, ((double)y + 1)*NOISE_SCALE_Y, ((double)z + 1)*NOISE_SCALE_Z) ? 128 : 0;
+
+				cubeCorners |= NOISE_THRESHOLD < noiseValues[x][y][z] ? 1 : 0;
+				cubeCorners |= NOISE_THRESHOLD < noiseValues[x+1][y][z] ? 2 : 0;
+				cubeCorners |= NOISE_THRESHOLD < noiseValues[x+1][y][z+1] ? 4 : 0;
+				cubeCorners |= NOISE_THRESHOLD < noiseValues[x][y][z+1] ? 8 : 0;
+				cubeCorners |= NOISE_THRESHOLD < noiseValues[x][y+1][z] ? 16 : 0;
+				cubeCorners |= NOISE_THRESHOLD < noiseValues[x+1][y+1][z] ? 32 : 0;
+				cubeCorners |= NOISE_THRESHOLD < noiseValues[x+1][y+1][z+1] ? 64 : 0;
+				cubeCorners |= NOISE_THRESHOLD < noiseValues[x][y+1][z+1] ? 128 : 0;
 
 				for (int i = 0; i < cellShapes[cubeCorners].size(); i++) {
 					Vertex v = {
@@ -33,10 +51,11 @@ ThreeDimensionMesh::ThreeDimensionMesh() {
 					if (i % 3 == 2) {
 						glm::vec3 U = mesh->at(mesh->size()-2).Position - mesh->at(mesh->size()-3).Position;
 						glm::vec3 V = mesh->at(mesh->size()-1).Position - mesh->at(mesh->size()-3).Position;
-						glm::vec3 normal;
-						normal.x = ((U.y*V.z) - (U.z*V.y));
-						normal.y = ((U.z*V.x) - (U.x*V.z));
-						normal.z = ((U.x*V.y) - (U.y*V.x));
+						glm::vec3 normal{
+							((U.y*V.z) - (U.z*V.y)),
+							((U.z*V.x) - (U.x*V.z)),
+							((U.x*V.y) - (U.y*V.x))
+						};
 						normal = glm::normalize(normal);
 						normal.x = normal.x / 2 + 0.5;
 						normal.y = normal.y / 2 + 0.5;
